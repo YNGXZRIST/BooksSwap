@@ -9,4 +9,5 @@ class PagesController extends Controller
     public function places(){
         return view('pages.mesta');
     }
+
 }

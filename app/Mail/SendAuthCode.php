@@ -13,14 +13,16 @@ class SendAuthCode extends Mailable
 
 
     protected $code;
+    protected $userId;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($code)
+    public function __construct($code,$userId)
     {
         $this->code=$code;
+        $this->userId=$userId;
         $this->markdown('mail.register_code');
     }
 
@@ -32,6 +34,7 @@ class SendAuthCode extends Mailable
     public function build(): SendAuthCode
     {
         $code=$this->code;
-        return $this->view('mail.register_code')->subject("Подтверждение регистрации")->with(compact('code'));
+        $userId=$this->userId;
+        return $this->view('mail.register_code')->subject("Подтверждение регистрации")->with(compact('code','userId'));
     }
 }

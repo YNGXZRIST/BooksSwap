@@ -1,9 +1,9 @@
 @extends('layout.index')
 @section('content')
     <div class="registrationWrapper">
-        <div class="registrationTitle">Присоединяйтесь к буккроссингу
+        <div class="registrationTitle">Войти в аккаунт
         </div>
-        <form action="{{route('register.registration')}}" method="post">
+        <form action="{{route('auth.authorization')}}" method="post">
             @csrf
             <div class="form-group">
                 <label for="email" class="registrationLabel">Адрес электронной почты</label>
@@ -11,37 +11,14 @@
                        placeholder="booksswap@booksswap">
             </div>
             <div class="form-group">
-                <label for="username" class="registrationLabel">Имя пользователя</label>
-                <input type="text" class="form-control" name="username" id="exampleName" placeholder="Иванов Иван">
-
-            </div>
-            <div class="form-group">
                 <label for="password" class="registrationLabel">Пароль</label>
                 <input type="password" name="password" class="form-control" id="password" placeholder="********">
             </div>
-            <button type="submit" class="btn registrationButton">Зарегистрироваться</button>
+            <button type="submit" class="btn registrationButton">Войти</button>
         </form>
     </div>
-    <div class="authWrapper">
-        <div>Уже зарегистрированы?</div>
-        <a class="authLink" href="{{route('auth.index')}}">
-            Войти
-        </a>
-    </div>
-
 @endsection
 <style>
-    .authWrapper {
-        display: flex;
-        justify-content: center;
-        text-align: center;
-        flex-direction: row;
-        margin: auto;
-        width: 30%;
-        margin-top: 20px;
-
-    }
-
     .registrationTitle {
         font-size: 36px;
         text-align: center;
@@ -62,14 +39,14 @@
         animation: gradient 10s ease infinite;
         transform: translate3d(0, 0, 0);
     }
-.authLink:hover{
-    color: #ED553B !important;
-    cursor: pointer;
-    text-decoration: none;
-}
-.authLink{
-    color: #111111;
-}
+    .authLink:hover{
+        color: #ED553B !important;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .authLink{
+        color: #111111;
+    }
     @keyframes gradient {
         0% {
             background-position: 0% 50%;

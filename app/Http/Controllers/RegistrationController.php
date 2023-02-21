@@ -23,4 +23,7 @@ class RegistrationController extends Controller
         return $action->handle($request);
 
     }
+    public function confirmRegisterBlade(){
+        return view('pages.registrationSuccess');
+    }
 }

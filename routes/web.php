@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,10 +21,30 @@ Route::get('/places',[\App\Http\Controllers\PagesController::class,'places'])->n
 Route::group(['prefix' => 'registration'], function () {
     Route::get('/', [\App\Http\Controllers\RegistrationController::class, 'index'])->name('register.index');
     Route::post('register', [\App\Http\Controllers\RegistrationController::class, 'sendCodeToMailForRegister'])->name('register.registration');
-//    Route::post('confirmCode', [\App\Http\Controllers\RegistrationController::class, 'confirmRegisterCode'])->name('register.confirmCode');
+    Route::get('confirmCode', [\App\Http\Controllers\RegistrationController::class, 'confirmRegisterBlade'])->name('register.confirmRegisterBlade');
 });
+Route::group(['prefix'=>'cart'],function (){
+    Route::get('/',[\App\Http\Controllers\CartController::class,'index'])->name('cart.index');
+    Route::get('add',[\App\Http\Controllers\CartController::class,'add'])->name('cart.add');
+});
+Route::group(['prefix'=>'authorization'],function (){
+    Route::get('/',[AuthController::class,'index'])->name('auth.index');
+    Route::post('auth',[AuthController::class,'authorization'])->name('auth.authorization');
+    Route::get('/notCompleted',[AuthController::class,'notCompletedRegister'])->name('auth.notCompleted');
+});
+Route::get('verify',[\App\Http\Controllers\RegistrationController::class,'confirmRegisterCode'])->name('verify');
 Route::middleware('auth')->group(function () {
-    Route::group(['prefix' => 'registration'], function () {
-        Route::post('confirmCode', [\App\Http\Controllers\RegistrationController::class, 'confirmRegisterCode'])->name('register.confirmCode');
+    Route::group(['prefix' => 'profile'], function () {
+        Route::get('/',[\App\Http\Controllers\ProfileController::class,'index'])->name('profile.index');
+
+        Route::post('updateAvatar',[\App\Http\Controllers\ProfileController::class,'updateAvatar'])->name('profile.update_avatar');
+        Route::group(['prefix' => 'add'], function () {
+            Route::get('/',[\App\Http\Controllers\GiveBooksController::class,'add'])->name('profile.add_give.index');
+            Route::post('submit',[\App\Http\Controllers\GiveBooksController::class,'submit'])->name('profile.submit_give_books');
+        });
+    });
+    Route::group(['prefix'=>'giveBooks'],function (){
+        Route::get('/',[\App\Http\Controllers\GiveBooksController::class,'index'])->name('giveBooks.index');
     });
 });
+Route::get('getSubGenreByGenre',[\App\Http\Controllers\GiveBooksController::class,'getSubGenreByGenre']);

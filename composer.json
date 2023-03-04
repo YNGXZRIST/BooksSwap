@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.3",
+        "pusher/pusher-php-server": "*",
         "snapappointments/bootstrap-select": "^1.13",
         "spatie/laravel-medialibrary": "^10.7"
     },

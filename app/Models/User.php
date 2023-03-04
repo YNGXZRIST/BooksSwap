@@ -44,6 +44,9 @@ class User extends Authenticatable implements HasMedia
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+public function messages(): \Illuminate\Database\Eloquent\Relations\HasMany
+{
+    return $this->hasMany(Messages::class);
+}
 
 }

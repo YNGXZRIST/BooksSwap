@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,34 +18,40 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/places',[\App\Http\Controllers\PagesController::class,'places'])->name('pages.places');
+Route::get('/places', [\App\Http\Controllers\PagesController::class, 'places'])->name('pages.places');
 Route::group(['prefix' => 'registration'], function () {
     Route::get('/', [\App\Http\Controllers\RegistrationController::class, 'index'])->name('register.index');
     Route::post('register', [\App\Http\Controllers\RegistrationController::class, 'sendCodeToMailForRegister'])->name('register.registration');
     Route::get('confirmCode', [\App\Http\Controllers\RegistrationController::class, 'confirmRegisterBlade'])->name('register.confirmRegisterBlade');
 });
-Route::group(['prefix'=>'cart'],function (){
-    Route::get('/',[\App\Http\Controllers\CartController::class,'index'])->name('cart.index');
-    Route::get('add',[\App\Http\Controllers\CartController::class,'add'])->name('cart.add');
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+    Route::get('add', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
 });
-Route::group(['prefix'=>'authorization'],function (){
-    Route::get('/',[AuthController::class,'index'])->name('auth.index');
-    Route::post('auth',[AuthController::class,'authorization'])->name('auth.authorization');
-    Route::get('/notCompleted',[AuthController::class,'notCompletedRegister'])->name('auth.notCompleted');
+Route::group(['prefix' => 'authorization','controller'=>AuthController::class], function () {
+    Route::get('/',  'index')->name('auth.index');
+    Route::post('auth', 'authorization')->name('auth.authorization');
+    Route::get('/notCompleted','notCompletedRegister')->name('auth.notCompleted');
 });
-Route::get('verify',[\App\Http\Controllers\RegistrationController::class,'confirmRegisterCode'])->name('verify');
+Route::get('verify', [\App\Http\Controllers\RegistrationController::class, 'confirmRegisterCode'])->name('verify');
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'profile'], function () {
-        Route::get('/',[\App\Http\Controllers\ProfileController::class,'index'])->name('profile.index');
+        Route::get('/', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
 
-        Route::post('updateAvatar',[\App\Http\Controllers\ProfileController::class,'updateAvatar'])->name('profile.update_avatar');
+        Route::post('updateAvatar', [\App\Http\Controllers\ProfileController::class, 'updateAvatar'])->name('profile.update_avatar');
         Route::group(['prefix' => 'add'], function () {
-            Route::get('/',[\App\Http\Controllers\GiveBooksController::class,'add'])->name('profile.add_give.index');
-            Route::post('submit',[\App\Http\Controllers\GiveBooksController::class,'submit'])->name('profile.submit_give_books');
+            Route::get('/', [\App\Http\Controllers\GiveBooksController::class, 'add'])->name('profile.add_give.index');
+            Route::post('submit', [\App\Http\Controllers\GiveBooksController::class, 'submit'])->name('profile.submit_give_books');
         });
     });
-    Route::group(['prefix'=>'giveBooks'],function (){
-        Route::get('/',[\App\Http\Controllers\GiveBooksController::class,'index'])->name('giveBooks.index');
+    Route::prefix('chat')->name('chat.')->controller(ChatController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/getChats', 'getChats')->name('getChats');
+        Route::get('/messages', 'getMessages')->name('getMessages');
+        Route::post('/sendMessage', 'sendMessage')->name('sendMessage');
+    });
+    Route::group(['prefix' => 'giveBooks'], function () {
+        Route::get('/', [\App\Http\Controllers\GiveBooksController::class, 'index'])->name('giveBooks.index');
     });
 });
-Route::get('getSubGenreByGenre',[\App\Http\Controllers\GiveBooksController::class,'getSubGenreByGenre']);
+Route::get('getSubGenreByGenre', [\App\Http\Controllers\GiveBooksController::class, 'getSubGenreByGenre']);

@@ -4,14 +4,11 @@
 <nav class="header">
     {{--    @dd(Request::route()->uri)--}}
     @if(Auth::user() && Request::route()->uri ==='profile')
-        <div class="avatar" style="background: rgba(17,17,17,0) !important; margin-right: 0px;"></div>
+        <div class="avatar" style="background: rgba(17,17,17,0) !important;"></div>
 
     @else
-        @if(!Auth::user())
-        <div class="avatar" style="background: rgba(17,17,17,0) !important;"></div>
-    @else
         <div class="avatar"></div>
-    @endif
+
     @endif
     <div class="headerCategories">
 
@@ -19,7 +16,8 @@
 
 
         <a href="{{route('giveBooks.index')}}" class="headerCategory">отдаю</a>
-        <a href="#" class="headerCategory">книги</a>
+        <a href="#" class="headerCategory">книговорот</a>
+        <a href="#" class="headerCategory">BooksSwap</a>
         <a href="{{route('pages.places')}}" class="headerCategory">места</a>
         <a href="#" class="headerCategory">о нас</a>
     </div>
@@ -33,7 +31,7 @@
 
         </a>
         @if(Auth::user())
-            <a class="headerIcon">
+            <a class="headerIcon"  href="{{route('chat.index')}}">
 
                 <svg fill="#2F2B71" height="24px" width="24px" version="1.1" id="Capa_1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -132,12 +130,12 @@
     }
 
     .avatar {
-        width: 86px;
+        width: 0px;
         height: 86px;
-        background: #C4C4C4;
+        background: #ffffff;
         border-radius: 43px;
-        margin-left: 62px;
-        margin-right: 124px;
+        margin-left: 15%;
+        /*margin-right: 124px;*/
     }
 
     a {

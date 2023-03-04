@@ -16,7 +16,7 @@
             <button class="btn findButton">Найти книги</button>
         </div>
     </div>
-        <img src="{{asset('storage/images/woman_main.svg')}}" style="width: 300px;height: 300px;">
+        <img src="{{asset('/storage/images/woman_main.svg')}}" style="width: 300px;height: 300px;">
 </div>
 
 </div>

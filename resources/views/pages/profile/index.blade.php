@@ -3,26 +3,67 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 @section('content')
-    <div class="leftMenu">
-        <div class="userName">{{$user->name??''}}</div>
-        {{--        <img src="{{ Auth::user()->getMedia('avatars')->first() ? $avatar->getUrl('thumb') : asset('images/giveBooksBanner.svg')}}>--}}
-        <img class="avatarProfile"
-             src="{{ Auth::user()->getMedia('avatars')->first() ? $avatar->getUrl('thumb') : asset('images/avatars/empty_avatar.png')}}"
-             alt="avatar">
-        <a class="btn add" href="{{route('profile.add_give.index')}}"> отдать книги</a>
+    <div class="container">
+        <div class="leftMenu">
+            <img class="avatarProfile"
+                 src="{{ Auth::user()->getMedia('avatars')->first() ? $avatar->getUrl('thumb') : asset('images/avatars/empty_avatar.png')}}"
+                 alt="avatar">
+            <div class="userName">{{$user->name??''}}</div>
+
+        </div>
+        <a class="btn add " href="{{route('profile.add_give.index')}}"> отдать книги</a>
     </div>
 
+    <div class="contentWrap">
+
+        @if(count($userGiveBooks)>0)
+            <div class="userGiveBooksWrapper">
+                <div>Книги,которые вы отдаете</div>
+
+                @foreach($userGiveBooks as $item)
+                    <div class="userGiveBooksContainer">
+                        <img class="bookImg" src="{{asset($item->mainImage->url??'images/bookNotFound.svg')}}">
+
+                        @endforeach
+                    </div>
+            </div>
+        @endif
+    </div>
 @endsection
 
 <style>
+    .bookImg {
+        width: 200px;
+        height: 200px;
+    }
+
+    .userGiveBooksWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+
+    .container {
+        display: flex;
+    }
+
+    .contentWrap {
+        min-width: 80%;
+        background: rgba(65, 56, 56, 0.18);
+    }
+
     .add {
+
         margin-top: 20px;
         background: #ED553B !important;
         width: 200px;
+        height: 40px;
     }
-    .add:hover{
+
+    .add:hover {
         color: white;
     }
+
     .leftMenu {
         display: flex;
         flex-direction: column;
@@ -41,6 +82,7 @@
         animation: gradient 10s ease infinite;
         transform: translate3d(0, 0, 0);
     }
+
     @keyframes gradient {
         0% {
             background-position: 0% 50%;

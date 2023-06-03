@@ -14,7 +14,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = \Cart::getContent();
-//         dd($cartItems);
+
         return view('pages.like.index', compact('cartItems'));
     }
 
@@ -34,21 +34,20 @@ class CartController extends Controller
             'quantity'=>1
         ]);
         session()->flash('success', 'Product is Added to Cart Successfully !');
-
+        return response()->json(['success' => true]);
 //        return redirect()->route('cart.list');
     }
 
     public function removeCart(Request $request)
     {
-        Cart::remove($request->id);
+        \Cart::remove($request->id);
         session()->flash('success', 'Item Cart Remove Successfully !');
-
-        return redirect()->route('cart.list');
+        return response()->json(['success' => true]);
     }
 
     public function clearAllCart()
     {
-        Cart::clear();
+        \Cart::clear();
 
         session()->flash('success', 'All Item Cart Clear Successfully !');
 

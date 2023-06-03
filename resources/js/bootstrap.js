@@ -2,32 +2,23 @@ import _ from 'lodash';
 
 window._ = _;
 
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
 import axios from 'axios';
-
 window.axios = axios;
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
+import tippy from 'tippy.js'
+import "slick-carousel"
 import Echo from 'laravel-echo';
-window.$ = window.jQuery = require('jquery')
+window.toastr = require('toastr');
 window.Pusher = require('pusher-js');
+window.tippy = require('tippy.js');
+window.slick=require('slick-carousel');
 
+
+import "toastr";
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '52f22895600e08353c7e',
     cluster: 'eu',
     forceTLS: true
 });
-Pusher.logToConsole = true;

@@ -18,21 +18,32 @@ class ChatController extends Controller
         return view('pages.chat.index');
     }
 
-    public function getMessages(): \Illuminate\Database\Eloquent\Collection|array
+    public function getMessages(Request $request): \Illuminate\Database\Eloquent\Collection|array
     {
-        return Messages::query()->with('user')->get();
+        $userId = $request->user()->id;
+        return Messages::query()->with('user')->where('user_id', $userId)->orWhere('message_to_id', $userId)->get();
     }
-    public function getChats(): \Illuminate\Database\Eloquent\Collection|array
+
+    public function getChats(Request $request): \Illuminate\Database\Eloquent\Collection|array
     {
-        $user= User::query()->with('messages')->get();
-        dd($user);
+
+        $userId = $request->user()->id;
+
+        $usersIds = Messages::query()->select('user_id', 'message_to_id')
+            ->where('message_to_id',$userId)->orWhere( 'user_id', $userId)->orderBy('updated_at','DESC')->get();
+
+        $usersIds = collect($usersIds->toArray())->flatten()->all();
+
+
+        return User::query()->whereIn('id', array_unique($usersIds))->whereNot('id',$userId)->get();
     }
+
     public function sendMessage(MessageFormRequest $request)
     {
 
         $message = $request->user()->messages()->create($request->validated());
 
-        broadcast(new MessageSend($request->user(),$message));
+        broadcast(new MessageSend($request->user(), $message));
         return $message;
     }
 

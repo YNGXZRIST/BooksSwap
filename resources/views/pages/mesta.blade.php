@@ -27,7 +27,7 @@
         padding: 20px;
     }
     .place{
-        margin: 20px;
+
         color: #ED553B;
     }
     .mestaWrapper {
@@ -60,14 +60,14 @@
 
         var myCollection = new ymaps.GeoObjectCollection();
 
-        @foreach(\App\Models\SafeShelves::where('city_id',1)->get() as $item)
+        @foreach(\App\Models\SafeShelves::get() as $item)
         var myPlacemark = new ymaps.Placemark([
             {{$item->address}}
         ], {
             balloonContent: '{{$item->title}}'
         }, {
             preset: 'islands#icon',
-            iconColor: '#1b8094'
+            iconColor: '#ED553B'
         });
         myCollection.add(myPlacemark);
         @endforeach

@@ -1,9 +1,1 @@
-@component('mail::message')
-    # Email Confirmation
-    Please refer to the following link:
-    @component('mail::button', ['url' => route('verify', ['token' => $code,'userId'=>$userId])])
-        Verify Email
-    @endcomponent
-    Thanks,<br>
-    {{ config('app.name') }}
-@endcomponent
+@component('mail::message')Для подтверждения почты перейдите по ссылке@component('mail::button', ['url' => route('verify', ['token' => $code,'userId'=>$userId])])Подтвердить@endcomponentСпасибо, ваш<br>{{ config('app.name') }}@endcomponent

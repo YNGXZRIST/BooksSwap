@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Messages extends Model
 {
+    use CrudTrait;
     use HasFactory;
-    protected $fillable=[
-        'user_id',
-        'message',
-        'message_to_id'
-    ];
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+
+    public function senderUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-       return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'sender','id');
     }
+    public function receiverUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'receiver','id');
+    }
+
 }

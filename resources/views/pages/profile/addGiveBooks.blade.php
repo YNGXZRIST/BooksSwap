@@ -9,12 +9,20 @@
             <div class="form-group">
                 <label for="exampleFormControlInput1">Название книги</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" name="bookName"
-                       placeholder="Гордость и предубеждение">
+                       placeholder="Гордость и предубеждение"
+                       @if(isset($giveBookUpdate->title))
+                           value="{{$giveBookUpdate->title}}"
+                    @endif
+                >
             </div>
             <div class="form-group">
                 <label for="exampleFormControlInput2">Автор книги</label>
                 <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Джейн Остен"
-                       name="bookAuthor">
+                       name="bookAuthor"
+                       @if(isset($giveBookUpdate->author))
+                           value="{{$giveBookUpdate->author}}"
+                    @endif
+                >
             </div>
             <div class="form-group">
                 <label for="genreBook">Жанр книги</label>
@@ -38,16 +46,15 @@
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Состояние книги</label>
                 <select class="form-control" id="exampleFormControlSelect1" name="bookCondition">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
+
+                    @for($i=1;$i<=10; $i++)
+                        <option
+                            @if(isset($giveBookUpdate->condition) && $i==$giveBookUpdate->condition)
+                                    selected
+                            @endif
+                        >{{$i}}</option>
+                    @endfor
+
 
                 </select>
             </div>
@@ -58,14 +65,19 @@
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Комментарий</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="bookComments"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="bookComments"
+                >@if(isset($giveBookUpdate->description)){{$giveBookUpdate->description}}@endif</textarea>
             </div>
 
             <div class="form-group"><label for="price">Цена</label>
                 <div class="input-group mb-3">
 
 
-                    <input type="text" class="form-control" id="price" aria-label="Цена" name="price">
+                    <input type="text" class="form-control" id="price" aria-label="Цена" name="price"
+                           @if(isset($giveBookUpdate->price))
+                               value="{{$giveBookUpdate->price}}"
+                        @endif
+                    >
                     <div class="input-group-prepend">
                         <span class="input-group-text">₽</span>
                     </div>
@@ -81,9 +93,13 @@
                 <label>Отметьте место на карте</label>
                 {{--                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="bookComments"></textarea>--}}
                 <div id="leafletmap"></div>
-                <input id="myInputHidden" name="coordinates" type="hidden" value=""/>
-                <input id="myInputHidden1" name="humanAddress" type="hidden" value=""/>
+                <input id="myInputHidden" name="coordinates" type="hidden" value="{{isset($giveBookUpdate->coordinates)?$giveBookUpdate->coordinates:''}}"/>
+                <input id="myInputHidden1" name="humanAddress" type="hidden" value="{{isset($giveBookUpdate->address) ?$giveBookUpdate->address:''}}"/>
                 <input id="myInputHidden2" name="city" type="hidden" value=""/>
+                @if(isset($giveBookUpdate->id))
+                    <input id="updateId" name="updateId" type="hidden" value="{{$giveBookUpdate->id}}"/>
+
+                @endif
 
 
             </div>
@@ -92,13 +108,19 @@
             @csrf
             <button type="submit" class="btn submitBtn ">Опубликовать</button>
         </form>
+        @if(isset($giveBookUpdate->coordinates))
+            <meta name="coordinates" content="{{$giveBookUpdate->coordinates}}" />
+        @endif
 
+{{--        <meta name="recieverId" content="{{ $giveBookUpdate->address}}" />--}}
         <script>
             let markers = []
             let osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
             let osmLayer = new L.TileLayer(osmUrl, {
-                maxZoom: 18
+                maxZoom: 18,
+
             });
+            let initCoord =$('meta[name="coordinates"]').attr('content')
 
             let pt = new L.LatLng(54.718692892428145, 20.502049656271844);
             let map = new L.Map('leafletmap', {
@@ -106,6 +128,26 @@
                 zoom: 14,
                 layers: [osmLayer]
             });// Script for adding marker on map click
+            let orangeIcon = new L.Icon({
+                iconUrl: 'https://booksswap.ru/public/images/markers/marker-icon-2x-orange2.png',
+                shadowUrl: 'https://booksswap.ru/public/images/markers/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            });
+            if(initCoord!==undefined){
+                let initMarker = L.marker(initCoord.split(','),
+                    {   icon: orangeIcon,
+                        draggable: true,
+                        title: "Resource location",
+                        alt: "Resource Location",
+                        riseOnHover: true
+                    }).addTo(map);
+                markers.push(initMarker)
+            }
+
+
             function onMapClick(e) {
                 if (markers.length > 0) {
                     map.removeLayer(markers.pop());
@@ -121,14 +163,6 @@
                     .then(res => {
                         displayName = res.display_name;
                         address = res.address;
-                        let orangeIcon = new L.Icon({
-                            iconUrl: 'https://booksswap.ru/images/markers/marker-icon-2x-gold.png',
-                            shadowUrl: 'https://booksswap.ru/images/markers/marker-shadow.png',
-                            iconSize: [25, 41],
-                            iconAnchor: [12, 41],
-                            popupAnchor: [1, -34],
-                            shadowSize: [41, 41]
-                        });
                         let marker = L.marker(e.latlng, {
                             icon: orangeIcon,
                             draggable: true,

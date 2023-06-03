@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('give_book_id');
             $table->string('url');
+            
             $table->timestamps();
         });
     }

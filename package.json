@@ -11,15 +11,26 @@
     },
     "devDependencies": {
         "axios": "^0.21",
+        "jquery": "^3.6.4",
         "laravel-echo": "^1.15.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "pusher-js": "^8.0.1",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.60.0",
+        "sass-loader": "^12.6.0",
+        "slick-carousel": "^1.8.1",
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
-        "jquery": "^3.6.3",
+        "@popperjs/core": "^2.11.7",
+        "bootstrap": "^5.2.3",
+        "scrollreveal": "^4.0.9",
+        "socket.io-client": "^4.6.1",
+        "swiper": "^9.1.0",
+        "tippy.js": "^6.3.7",
+        "toastr": "^2.1.4",
         "vue": "^3.2.47"
     }
 }

@@ -3,21 +3,21 @@
 </div>
 <nav class="header">
     {{--    @dd(Request::route()->uri)--}}
-    @if(Auth::user() && Request::route()->uri ==='profile')
+{{--    @if(Auth::user() && Request::route()->uri ==='profile')--}}
         <div class="avatar" style="background: rgba(17,17,17,0) !important;"></div>
 
-    @else
-        <div class="avatar"></div>
+{{--    @else--}}
+{{--        <div class="avatar" style="background: rgba(252,252,252,0) !important;"></div>--}}
 
-    @endif
+{{--    @endif--}}
     <div class="headerCategories">
 
         <a href="{{url('/')}}" class="headerCategory">главная</a>
 
 
         <a href="{{route('giveBooks.index')}}" class="headerCategory">отдаю</a>
-        <a href="#" class="headerCategory">книговорот</a>
-        <a href="#" class="headerCategory">BooksSwap</a>
+        <a href="{{route('crossing.index')}}" class="headerCategory">книговорот</a>
+        <a  href="{{route('swap.index')}}" class="headerCategory">книгообмен</a>
         <a href="{{route('pages.places')}}" class="headerCategory">места</a>
         <a href="#" class="headerCategory">о нас</a>
     </div>
@@ -45,7 +45,7 @@
             </a>
         @endif
 
-        <a class="headerIcon">
+        <a class="headerIcon" href="{{route('cart.index')}}">
             <svg width="24" height="24" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M2.33857 10.711C-0.041108 7.61463 0.752117 2.97011 4.71824 1.42194C8.68437 -0.126229 11.064 2.97011 11.8573 4.51829C12.6505 2.97011 15.8234 -0.126229 19.7895 1.42194C23.7556 2.97011 23.7556 7.61463 21.376 10.711C18.9963 13.8073 11.8573 20 11.8573 20C11.8573 20 4.71824 13.8073 2.33857 10.711Z"
@@ -67,6 +67,7 @@
     }
 
     .headerNameLogo {
+        color: white !important;
         font-size: 36px;
     }
 

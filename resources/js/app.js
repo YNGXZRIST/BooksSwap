@@ -1,15 +1,12 @@
 import './bootstrap';
 
 import {createApp} from 'vue';
-import ChatMessages from './components/ChatMessages';
-import ChatForm from './components/ChatForm';
-import $ from "jquery";
+import ChatsList from "./components/ChatsList.vue";
 
 const app = createApp({
-  components: {
-    ChatMessages,
-    ChatForm
-  }
+    components: {
+        ChatsList
+    }
 })
 
 app.mount('#app')

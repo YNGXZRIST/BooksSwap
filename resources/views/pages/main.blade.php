@@ -1,4 +1,6 @@
 @extends('layout.index')
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+
 
 <div class="mainPageBanner">
     <div class="mainPageBannerTitle">
@@ -53,4 +55,5 @@
     .--findButton{
         background: white;
     }
+
 </style>
